@@ -1,0 +1,7 @@
+name: nuxeoAngularDartSample
+description: A sample web application
+dependencies:
+  angular: any
+  browser: any
+  nuxeo_automation:  
+    git: https://github.com/nelsonsilva/nuxeo-dart-automation.git

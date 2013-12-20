@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html ng-app>
+  <head>
+    <meta charset="utf-8">
+    <title>NuxeoAngularDartSample</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="nuxeoangulardartsample.css">
+  </head>
+  <body>
+
+
+  <div nuxeo-notes class="well span16">
+    <span class="span2">
+    <h3>Notes</h3>
+    <ul>
+      <li class="pointer"
+          ng-repeat="note in notectrl.notes"
+          ng-click="notectrl.selectNote(note)">
+        {{note.title}}
+      </li>
+    </ul>
+    </span>
+  
+    <span class="span4">
+    <h3>Current Note</h3>
+    <div><strong>Title: </strong>{{notectrl.selectedNote.title}}</div>
+    <div><strong>Description: </strong>{{notectrl.getCurrentNoteValue('dc:description')}}</div>
+    <div><strong>Content: </strong>
+     <div ng-bind-html="notectrl.getCurrentNoteValue('note:note')"></div>    
+    </div>
+    
+    <span class="span4">
+    <h3>Preview</h3>
+    </span>
+    
+  </div>
+  
+    <script type="application/dart" src="nuxeoangulardartsample.dart"></script>
+    <script src="packages/browser/dart.js"></script>
+    
+  </body>
+</html>
