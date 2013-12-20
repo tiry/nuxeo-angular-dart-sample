@@ -11,7 +11,7 @@
 
 
   <div nuxeo-notes class="well span16">
-    <span class="span2">
+    <div class="span2">
     <h3>Notes</h3>
     <ul>
       <li class="pointer"
@@ -20,19 +20,21 @@
         {{note.title}}
       </li>
     </ul>
-    </span>
+    </div>
   
-    <span class="span4">
+    <div class="span6">
     <h3>Current Note</h3>
     <div><strong>Title: </strong>{{notectrl.selectedNote.title}}</div>
     <div><strong>Description: </strong>{{notectrl.getCurrentNoteValue('dc:description')}}</div>
     <div><strong>Content: </strong>
      <div ng-bind-html="notectrl.getCurrentNoteValue('note:note')"></div>    
     </div>
+    </div>
     
-    <span class="span4">
-    <h3>Preview</h3>
-    </span>
+    <div class="span8">
+    <h3>Preview</h3>    
+    <iframe width="550px" height="600px" src="{{notectrl.baseUrl}}/restAPI/preview/{{notectrl.selectedNote.repository}}/{{notectrl.selectedNote.uid}}/default/" border="0"></iframe>
+    </div>
     
   </div>
   
