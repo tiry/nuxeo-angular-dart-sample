@@ -39,6 +39,10 @@ class NotesController {
     return _notes;
   }
 
+  void save() {
+    print("save" + _selectedNote.toString()); 
+  }
+  
   void selectNote(nuxeo.Document note) {
     _selectedNote = note;
   }  
