@@ -15,13 +15,15 @@ The goal is to build a simple note editor in Html.
 
 ### operation builder
 
-for the operation builder, I like the "fluent like" API we have in Java and JS
-
-     nuxeo.op("opid").set("p1","v1").setInput("yyyy").execute()
-
 From my undertsanding in the current Dart API, I would need to do : 
 
      nuxeo.op("opid", input : "yyyy", params : { p1: "v1"})
+
+
+For the operation builder, I like the *"fluent like"* API we have in Java and JS
+
+     nuxeo.op("opid").set("p1","v1").setInput("yyyy").execute()
+
 
 ### login
 
@@ -35,7 +37,8 @@ I may be missing some Dart idiomatic stuff, but I would find it more logic to ha
 
 ### Document properties
 
-Document properties are exposed via the [] operator.
+Document properties are exposed via the `[]` operator.
+
 This is great.
 
 However, for some reasons, it does not seem to play well with the Angular bindings.
