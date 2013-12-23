@@ -23,13 +23,31 @@ class NotesController {
     return "http://127.0.0.1:8080/nuxeo";
   }
   
+  bool isActive(nuxeo.Document note) {
+    if(note==null) {
+      print("null note!!!");
+    }
+    if (_selectedNote!=null && note!=null) {
+      return _selectedNote.uid==note.uid;
+    }
+    false;
+  }
+  
   void fetchNotes() {
     print("fetching notes !");
-    nxclient.op("Document.PageProvider")(params : {'query' : "select * from Note order by dc:modified desc", 'pageSize' : 20}, documentSchemas : "dublincore,note")
+    nxclient.op("Document.PageProvider")(params : {'query' : "select * from Note order by dc:modified desc", 'pageSize' : 12}, documentSchemas : "dublincore,note")
     .then(setNotes);
     //.then( (docs)=> _notes = docs);
   }
 
+  void saveCurrentNote() {  
+    if (_selectedNote==null) {
+      return;
+    }
+    String value = this.selectedNoteContent;
+    nxclient.op("Document.SetProperty")(input:"doc:${_selectedNote.uid}", params : {'value' : value, 'xpath' : 'note:note'});
+  }
+  
   void setNotes(nuxeo.Pageable<nuxeo.Document> docs) {
     _notes = docs;
     _selectedNote = docs.first;
@@ -38,14 +56,11 @@ class NotesController {
   nuxeo.Pageable<nuxeo.Document> get notes {
     return _notes;
   }
-
-  void save() {
-    print("save" + _selectedNote.toString()); 
-  }
   
   void selectNote(nuxeo.Document note) {
     _selectedNote = note;
   }  
+  
   
   Object getCurrentNote() {
     if (_selectedNote==null) {
@@ -67,6 +82,21 @@ class NotesController {
     }
     return _selectedNote;
   }
+
+  String get selectedNoteContent {
+    if (_selectedNote==null) {
+      return "";
+    }
+    return _selectedNote["note:note"];
+  }
+  
+  void set selectedNoteContent (String content) {
+    if (_selectedNote==null) {
+      return;
+    }
+    _selectedNote["note:note"]=content;
+  }
+  
 }
 
 class NuxeoAppModule extends Module {
