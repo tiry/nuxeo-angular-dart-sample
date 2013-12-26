@@ -1,9 +1,10 @@
 import 'dart:html';
+import 'dart:async';
+import 'dart:core';
 import 'package:angular/angular.dart';
 import 'package:nuxeo_automation/browser_client.dart' as nuxeo;
 import 'package:perf_api/perf_api.dart';
 import 'note_manager.dart';
-//import 'package:nuxeo_automation/nuxeo_client.dart'; 
 
 @NgController(
     selector: '[nuxeo-notes]',
@@ -14,6 +15,10 @@ class NotesController {
   nuxeo.Client nxclient = null;  
   Note _selectedNote;
   NoteManager noteManager;
+  Timer _autoSaveTimer;
+  Duration _autoSaveDuration = new Duration(minutes: 1);
+  String localStatus;
+  String serverStatus;  
   
   NotesController() {  
     nxclient = new nuxeo.Client(url: "http://127.0.0.1:8080/nuxeo");
@@ -26,6 +31,10 @@ class NotesController {
     return "http://127.0.0.1:8080/nuxeo";
   }
   
+  bool get online {
+    return true;
+  }
+  
   bool isActive(Note note) {
     if(note==null) {
       print("null note!!!");
@@ -35,17 +44,21 @@ class NotesController {
     }
     false;
   }
-
-  void saveCurrentNote() {  
-    if (_selectedNote==null) {
-      return;
-    }
-    noteManager.saveNote(_selectedNote);
-  }
   
+  void saveAll() {  
+    Future<String> status = noteManager.saveNotes(notes);
+    status.then((status) => serverStatus = status + " " + new DateTime.now().toString());
+  }
+       
   void _setNotes(List<Note> docs) {
     _notes = docs;
     _selectedNote = docs.first;
+    _autoSaveTimer = new Timer.periodic(_autoSaveDuration,_autoSave);    
+  }
+  
+  void _autoSave(_) {
+    noteManager.saveNotesInLocalStore(notes);    
+    localStatus = "draft saved at " + new DateTime.now().toString();
   }
   
   List<Note> get notes {
@@ -69,6 +82,11 @@ class NotesController {
       return {};
     }
     return _selectedNote;
+  }
+    
+  void newNote() {
+    noteManager.newNote(_notes);
+    _selectedNote = _notes.first;    
   }
   
 }

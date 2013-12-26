@@ -9,10 +9,25 @@
     <script src="js/jquery-1.10.2.js"></script>
     <script src="js/bootstrap.js"></script>
   </head>
-  <body>
+  <body nuxeo-notes>
 
+  <nav class="navbar navbar-default" role="navigation">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Note Editor</a>
+      </div>
+      
+      <p class="navbar-text" ng-if="notectrl.online">Online mode</p>
+      <p class="navbar-text" ng-if="!notectrl.online">Offline mode</p>            
+      
+      <button type="button" class="btn navbar-btn btn-primary" ng-click="notectrl.newNote()">New Note</button>
+      <button type="button" class="btn navbar-btn btn-primary" ng-click="notectrl.saveAll()">Save on Server</button>
+      
+      <p class="navbar-text">{{notectrl.localStatus}}</p>
+      <p class="navbar-text">{{notectrl.serverStatus}}</p>
+      
+    </nav>
 
-  <div nuxeo-notes>
+  <div >
     <div class="col-md-2">
     <h3>Notes</h3>
     <div class="list-group">
@@ -42,11 +57,7 @@
       <div class="form-group">
         <label for="noteContent">Content</label>
         <textarea class="form-control" id="noteContent" ng-model="notectrl.selectedNote.content" rows="25"></textarea>
-      </div>
-    
-    <br/>
-    <button class="btn btn-primary" ng-click="notectrl.saveCurrentNote()">Save</button>
-    
+      </div>    
     </form>
          
     </div>
